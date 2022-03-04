@@ -55,7 +55,7 @@ services:
     volumes:
       - grafana_data:/var/lib/grafana
 
-  volumes:
-    timescaledb_data:
-    pgadmin_data:
-    grafana_data:
+volumes:
+  timescaledb_data:
+  pgadmin_data:
+  grafana_data:

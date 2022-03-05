@@ -2,12 +2,12 @@ version: '3'
 services:
   # HomeAssistant
   homeassistant:
-    container_name: home-assistant
     image: homeassistant/home-assistant
+    container_name: home-assistant
     restart: unless-stopped
     volumes:
-      - ~/ha-config:/config
       - /etc/localtime:/etc/localtime:ro
+      - ~/homeassistant:/config
     network_mode: host
     depends_on:
       - timescaledb
@@ -47,15 +47,31 @@ services:
   # Grafana dashborad
   grafana:
     image: grafana/grafana
+    container_name: grafana
     restart: unless-stopped
-    depends_on:
-      - timescaledb
     ports:
       - "3000:3000"
     volumes:
       - grafana_data:/var/lib/grafana
+    depends_on:
+      - timescaledb
+
+  # MQTT
+  mqtt:
+    image: eclipse-mosquitto
+    container_name: mosquitto
+    restart: unless-stopped
+    ports:
+      - "1883:1883"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ~/mosquitto:/mosquitto/config:ro
+      - mosquitto_data/:/mosquitto/data
+      - mosquitto_log/:/mosquitto/log
 
 volumes:
   timescaledb_data:
   pgadmin_data:
   grafana_data:
+  mosquitto_data:
+  mosquitto_log:

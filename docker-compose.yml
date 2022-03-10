@@ -7,7 +7,8 @@ services:
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ~/homeassistant:/config
+      - homeassistant_data:/config
+      - ./homeassistant/configuration.yaml:/config/configuration.yaml
     network_mode: host
     depends_on:
       - timescaledb
@@ -71,6 +72,7 @@ services:
       - mosquitto_log:/mosquitto/log
 
 volumes:
+  homeassistant_data:
   timescaledb_data:
   pgadmin_data:
   grafana_data:

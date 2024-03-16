@@ -1,8 +1,9 @@
-version: '3'
+version: "3"
 services:
   # HomeAssistant
   homeassistant:
-    image: homeassistant/home-assistant
+    #image: homeassistant/home-assistant
+    image: homeassistant/home-assistant:2022.6.7
     container_name: home-assistant
     restart: unless-stopped
     volumes:
@@ -13,9 +14,9 @@ services:
     depends_on:
       - timescaledb
 
-  # Timescale    
+  # Timescale
   timescaledb:
-    image: timescale/timescaledb:latest-pg13
+    image: timescale/timescaledb:latest-pg15
     container_name: timescaledb
     restart: unless-stopped
     environment:
@@ -29,7 +30,7 @@ services:
       - "5432:5432"
     volumes:
       - timescaledb_data:/var/lib/postgresql/data
-  
+
   # Pgadmin 4
   pgadmin:
     image: dpage/pgadmin4
@@ -58,23 +59,8 @@ services:
     depends_on:
       - timescaledb
 
-  # MQTT
-  mqtt:
-    image: eclipse-mosquitto
-    container_name: mosquitto
-    restart: unless-stopped
-    ports:
-      - "1883:1883"
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ./mosquitto:/mosquitto/config:ro
-      - mosquitto_data:/mosquitto/data
-      - mosquitto_log:/mosquitto/log
-
 volumes:
   homeassistant_data:
   timescaledb_data:
   pgadmin_data:
   grafana_data:
-  mosquitto_data:
-  mosquitto_log:

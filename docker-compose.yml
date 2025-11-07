@@ -1,8 +1,8 @@
 services:
   # HomeAssistant
   homeassistant:
-    #image: homeassistant/home-assistant
-    image: homeassistant/home-assistant:2022.6.7
+    image: homeassistant/home-assistant
+    #image: homeassistant/home-assistant:2022.6.7
     container_name: home-assistant
     restart: unless-stopped
     volumes:
@@ -29,22 +29,6 @@ services:
       - "5432:5432"
     volumes:
       - timescaledb_data:/var/lib/postgresql/data
-
-  # Pgadmin 4
-  pgadmin:
-    image: dpage/pgadmin4
-    container_name: pgadmin4
-    restart: unless-stopped
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
-    ports:
-      - "5050:80"
-    volumes:
-      - pgadmin_data:/var/lib/pgadmin
-      - ./pgadmin/servers.json:/pgadmin4/servers.json
-    depends_on:
-      - timescaledb
 
   # Grafana dashborad
   grafana:
